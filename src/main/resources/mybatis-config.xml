@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <!-- 库名直接用中文;XML 中 & 必须写成 &amp; -->
+                <property name="url" value="jdbc:mysql://localhost:3306/图书管理系统?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=UTF-8"/>
+                <!-- 安全加固: 不再用 root,改用专用低权限账号 bookapp。
+                     它只有 图书管理系统 上的 SELECT/INSERT/UPDATE/DELETE,
+                     没有 DROP/CREATE/GRANT —— 即使程序被攻破也删不掉库。
+                     账号创建脚本见 D:\MySQL\hardening\secure-accounts.sql -->
+                <property name="username" value="bookapp"/>
+                <property name="password" value="Book@Local#2026"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!-- 注解路线:扫描包下所有 Mapper 接口并注册 -->
+        <package name="book.manage.mapper"/>
+    </mappers>
+</configuration>
